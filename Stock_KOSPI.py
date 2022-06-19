@@ -1,4 +1,15 @@
 from pykrx import stock
-from pykrx import bond
+import StockName
+import Date 
+import Graph
 
-df = stock.get_market_trading_volume_by_date("20210115", "20210122", "005930")
+class KOSPI:
+    __graph = Graph.Graph
+
+    def __init__(self):
+        KOSPI.__graph = Graph.Graph()
+
+    def search(self, title):
+        stockPrice = stock.get_market_ohlcv_by_date(Date.GetDefaultDate(), Date.GetNowYMD(), StockName.KOSPI.NAME[title])
+        fundermental = stock.get_market_fundamental(Date.GetDefaultDate(), Date.GetNowYMD(), StockName.KOSPI.NAME[title])
+        KOSPI.__graph.Draw_separate(title, stockPrice['종가'], fundermental['PER'], fundermental['PBR'])
