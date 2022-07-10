@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib as mlp
+import pandas
+
 import os
 import shutil
 
@@ -20,21 +22,27 @@ class Graph:
         includeFontPath = os.getcwd() + "\\Font\\" + Graph.__nanumBarunGothic
         shutil.copyfile(includeFontPath, Graph.fontRepo)    
 
-    def Draw_separate(self, title, stock, per, pbr):
-        plt.subplot(311)
-        plt.title(title)
+    def draw_separate(self, title, stock, per, pbr):
+        plt.subplot(3,1,1)
+        plt.title(title + " STOCK")
         plt.plot(stock)
 
-        plt.subplot(312)
+        plt.subplot(3,1,2)
         plt.title(title + " PER")
         plt.plot(per)
 
-        plt.subplot(313)
+        plt.subplot(3,1,3)
         plt.title(title + " PBR")
         plt.plot(pbr)
 
         plt.show()
     
+    def draw_combine(self, title, stock, per, pbr):
+        plt.title(title + " PBR")
+        plt.plot(stock)
+        plt.plot(per)
+        plt.plot(pbr)
+
     # def draw_combine(title, per, pbr):
         
         
