@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import matplotlib as mlp
-import pandas
-
 import os
 import shutil
+
+
 
 class Graph:
     __nanumBarunGothic = "NanumBarunGothic.ttf"
@@ -22,6 +22,12 @@ class Graph:
         includeFontPath = os.getcwd() + "\\Font\\" + Graph.__nanumBarunGothic
         shutil.copyfile(includeFontPath, Graph.fontRepo)    
 
+    # standard 값에 맞추어 value 평균의 비율을 구한 뒤에 data 를 보정합니다.
+    def __correctStock(avg_standard, avg_value, data):
+        coefficient = avg_standard / avg_value
+        avg_value *= coefficient
+        data *= coefficient
+
     def draw_separate(self, title, stock, per, pbr):
         plt.subplot(3,1,1)
         plt.title(title + " STOCK")
@@ -38,12 +44,13 @@ class Graph:
         plt.show()
     
     def draw_combine(self, title, stock, per, pbr):
-        plt.title(title + " PBR")
-        plt.plot(stock)
-        plt.plot(per)
-        plt.plot(pbr)
+        Graph.__correctStock(stock.mean(), per.mean(), per);
+        Graph.__correctStock(stock.mean(), pbr.mean(), pbr);
 
-    # def draw_combine(title, per, pbr):
-        
+        plt.title(title + " PBR")
+        plt.plot(stock, label = "STOCK")
+        plt.plot(per, label = "PER")
+        plt.plot(pbr, label = "PBR")       
+        plt.legend() 
         
         

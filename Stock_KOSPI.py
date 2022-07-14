@@ -1,39 +1,24 @@
+from types import MethodType
 from pykrx import stock
 import StockName
 import Date 
-import Graph
-import CheckType
 
 class KOSPI:
-    __graph = Graph.Graph
+    def search_single(self, title : str, drawFunc : MethodType):
+        if isinstance(title, str) == False:
+            raise Exception("The titles variable can only be in the Str Type.")
 
-    def __init__(self):
-        KOSPI.__graph = Graph.Graph()
+        stockPrice = stock.get_market_ohlcv_by_date(Date.GetDefaultDate(), Date.GetNowYMD(), StockName.KOSPI.NAME[title])
+        fundermental = stock.get_market_fundamental(Date.GetDefaultDate(), Date.GetNowYMD(), StockName.KOSPI.NAME[title])
 
-    # v
-    def __correctStock(standard, value):
-        coefficient = standard / value
-        value *= coefficient # value 값에 적용안되는 문제있음.
-        print(value)
-
-    def search(self, titles) -> bool:
-        for iter in titles:
-            stockPrice = stock.get_market_ohlcv_by_date(Date.GetDefaultDate(), Date.GetNowYMD(), StockName.KOSPI.NAME[iter])
-            fundermental = stock.get_market_fundamental(Date.GetDefaultDate(), Date.GetNowYMD(), StockName.KOSPI.NAME[iter])
-            KOSPI.__graph.draw_separate(iter, stockPrice['종가'], fundermental['PER'], fundermental['PBR'])
-        
-    def search2(self, titles) -> bool:
-        if CheckType.isList(titles) == False:
-            raise Exception("Only the type of titles is allowed.")
+        drawFunc(title, stockPrice['종가'], fundermental['PER'], fundermental['PBR'])
+    
+    def search_multi(self, titles : list, drawFunc : MethodType):
+        if isinstance(titles, list) == False:
+            raise Exception("The titles variable can only be in the List Type.")
 
         for iter in titles:
             stockPrice = stock.get_market_ohlcv_by_date(Date.GetDefaultDate(), Date.GetNowYMD(), StockName.KOSPI.NAME[iter])
             fundermental = stock.get_market_fundamental(Date.GetDefaultDate(), Date.GetNowYMD(), StockName.KOSPI.NAME[iter])
-            avg_stockPrice = stockPrice['종가'].mean();
-            avg_fundermantal_PER = fundermental['PER'].mean();
-            avg_fundermantal_PBR = fundermental['PBR'].mean();
 
-            KOSPI.__correctStock(avg_stockPrice, avg_fundermantal_PBR)
-            KOSPI.__correctStock(avg_stockPrice, avg_fundermantal_PBR)
-
-            KOSPI.__graph.draw_combine(iter, stockPrice['종가'], fundermental['PER'], fundermental['PBR'])
+            drawFunc(iter, stockPrice['종가'], fundermental['PER'], fundermental['PBR'])
