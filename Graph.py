@@ -47,7 +47,7 @@ class Graph:
         Graph.__correctStock(stock.mean(), per.mean(), per);
         Graph.__correctStock(stock.mean(), pbr.mean(), pbr);
 
-        plt.title(title + " PBR")
+        plt.title(title + " STOCK & FINANCE")
         plt.plot(stock, label = "STOCK")
         plt.plot(per, label = "PER")
         plt.plot(pbr, label = "PBR")       
