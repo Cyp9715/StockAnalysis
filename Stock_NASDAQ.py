@@ -3,8 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import FinanceDataReader as fdr
 import pandas as pd
-import FinanceDataReader as fdr
-
 
 def make_colors(n, colormap=plt.cm.Spectral):
     return colormap(np.linspace(0.1, 1.0, n))
